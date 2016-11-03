@@ -1,11 +1,9 @@
-# Java基础 #
 ## ClassLoader ##
 一般情况下通过import即可引入需要的类，在涉及到AndroidFramework层的情况下，通过ClassLoader扩充Framework层达到对原生该层的最小化修改。
 Java的Runtime环境在初始化时，会自动创建一个ClassLoader的内部对象用于加载Runtime所需类。
 每个ClassLader都必须有一个父ClassLoader，对于某个类的加载，只有父ClassLoder找不到该类时，子ClassLoader才会去	继承装载该类。
 对于Android的主要影响体现在：Android的Class文件在应用程序中被打包为dex文件，而dex文件由AndroidSdk提供的DexClassLoader进行加载。
 
-# FrameWork层 #
 ## 一个包含Activity的客户端至少有几个线程？ ##
 在DDMS中看到的至少会有3个线程，包括1个main线程，Binder1和Binder2线程
 
@@ -63,7 +61,7 @@ ContextWrapper中包含了一个真正的Context实现类的引用，也即是Co
 > ContextWrapper仅有一个构造方法<br/>`public ContextWrapper(Context base) {
         mBase = base;
     }`
-<br/>【其中的base在FrameWork层创建Activity时，通过Activity的attach方法传入（**这段存疑，网上的说法**）
-[http://blog.csdn.net/z1074971432/article/details/12561369](http://blog.csdn.net/z1074971432/article/details/12561369)】
+<br/>其中的base在FrameWork层创建Activity时，通过Activity的attach方法传入（**存疑**）
+<br/>【[http://blog.csdn.net/z1074971432/article/details/12561369](http://blog.csdn.net/z1074971432/article/details/12561369)】
 
 ## Context的创建 ##
