@@ -16,3 +16,7 @@
 - onDestroy 当activity即将走向生命周期终点时，onDestroy会被调用 *只会被执行一次*，但注意onDestroy被执行后并不代表activity对象一定会被回收，比如发生内存泄漏的情况下，任何无法从GC可达性算法中被判定为不可达的activity引用，此时都会使得对应activity即使在onDestroy被调用后，依然无法被回收。
 - onRestart 当activity此时位于后台且为onStop，在它被再次调往前台时，即会执行onRestart，紧接着就是onResume *可能执行多次*
 - onSaveInstanceState 当前activity处于异常状况，且即将被销毁的情况下，**可能而非必然**被调用，例如内存不足，横竖屏切换等情况下。且onSaveInstanceState确定会调用时，**一定** 会在onStop之前调用，但**无法确保一定**在onPause之前或之后被调用。
+
+> 其他内容：进程优先级，启动模式等。
+
+### Broadcast ###
