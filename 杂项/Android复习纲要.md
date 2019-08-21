@@ -1,7 +1,7 @@
 # Android复习纲要 #
 > 结构梳理参考：[https://blog.csdn.net/ClAndEllen/article/details/79257663](https://blog.csdn.net/ClAndEllen/article/details/79257663 "主要参考")
 
-## Android基础 ##
+## 四大组件 ##
 
 ### Activity ###
 [https://blog.csdn.net/clandellen/article/details/79257489](https://blog.csdn.net/clandellen/article/details/79257489 "参考")
@@ -20,3 +20,27 @@
 > 其他内容：进程优先级，启动模式等。
 
 ### Broadcast ###
+[https://blog.csdn.net/clandellen/article/details/79279416](https://blog.csdn.net/clandellen/article/details/79279416)
+android的一种用于在同一App不同进程不同组件间，或不同app间进行通信的机制。
+#### 广播发送 ####
+1. 无序广播 `context.sendBroadcast(intent)`
+	<br>不可被拦截
+
+2. 有序广播 `context.sendOrderBroadcast(intent)`
+	<br>可以被拦截，可以被修改，可以添加新数据，下一个接受者接受到的数据，是上一个接受者传递过来的，所以有可能是被修改过的。
+3. 本地广播 `LocalBroadcastManager.getInstance(context).sendBroadcast(intent)`
+	<br>仅会在app内部传播
+#### 广播接收 ####
+
+1. 静态注册
+	<br>实现 `xxxReceiver extends BroadcastReceiver`,重写 `onReceive(context,intent)`,并在AndroidManifest.xml中进行注册。
+2. 动态注册
+	<br>Receiver的创建方式同上，但注册方式通过调用`context.registerReceiver(多种重载)`来进行注册。对于本地广播通过`LocalBroadcastManager.getInstance(contenxt).registerReceiver(receiver,intentFilter)`来注册。
+	<br>注意动态注册的广播接收器，需要在不使用的时候解注册unregister。
+#### 实现 ####
+1. 非本地广播(无序和有序广播)<br>通过Binder机制实现，并以AMS为桥梁。换言之，广播通过Binder机制发送到AMS，再由AMS查找到合适的接受者（即接收器实际上也是注册在AMS中），再将广播转发给合适的接受者。
+2. 本地广播<br>内部实际上通过Handler实现。广播的真实表现形式就是Handler的message。`LocalBroadcastManager.getInstance(context)`这里的入参context实际上就是为了拿到在mainLooper上的handler。LocalBroadcastManager的单例中持有了所有通过该单例注册的接受者。通过该单例调用`sendBroadcast(intent)`时，实际上就是分析intent,找到合适的接受者，然后通过handler发送信号，向对应的接受者调用它的onReceive方法。
+
+### ContentProvider ###
+[https://blog.csdn.net/ClAndEllen/article/details/82765220](https://blog.csdn.net/ClAndEllen/article/details/82765220)
+<br>跨程序数据共享的标准方式。
